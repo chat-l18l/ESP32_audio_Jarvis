@@ -12,3 +12,6 @@ __pycache__/
 # ESP-IDF: defaults zijn bron; gegenereerde backups niet.
 sdkconfig.old
 sdkconfig.*.old
+# pixi environments
+.pixi/*
+!.pixi/config.toml

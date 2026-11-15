@@ -5,26 +5,52 @@
 | Eigenschap | Waarde | Herkomst |
 | --- | --- | --- |
 | Board | Louder-ESP32 met ESP32-WROVER | `[confirmed: gebruiker, 2026-11-15]` |
-| Printrevisie | H9 | `[confirmed: gebruiker, 2026-11-15]` |
+| Printrevisie | gebruiker leest H9; Sonocotta publiceert voor klassieke ESP32 alleen t/m H7 | `[verify]` (foto) |
 | Microfoonposities | twee, onbezet; nog geen modules gekozen | `[confirmed: gebruiker, 2026-11-15]` |
 | Voeding ontwikkeling | alleen USB-C (editen/flashen) | `[confirmed: gebruiker, 2026-11-15]` |
 | Voeding deployment | 12 V / 3 A-adapter; connector en polariteit open | `[confirmed: gebruiker, 2026-11-15]` |
 | Luidsprekers | twee (stereo); impedantie en vermogen open | `[confirmed: gebruiker, 2026-11-15]` |
-| Modulevariant, flash/PSRAM | onbekend | `[verify]` |
-| Pinout H9 gelijk aan H6+-tabel hieronder | onbekend | `[verify]` |
+| Modulevariant | ESP32-WROVER-IE (8MB) volgens H6/H7-schema | `[verify]` (opschrift module) |
+| Flash/PSRAM-verdeling | onbekend | `[verify]` |
+| Pinout gelijk aan H7-schema | waarschijnlijk | `[verify]` (revisie bevestigen) |
 
-Er staan nog geen eigen foto's in deze map. De lokale Seeed-pdf's zijn afkomstig
-van de productpagina; `seeed_louder_esp32_h2_schematic.pdf` is van revisie **H2**
-en is dus **niet** het schema van dit board. Bron-URL, SHA-256 en licentie van de
-pdf's zijn nog niet vastgelegd (status `needs_check`).
+Er staan nog geen eigen foto's in deze map.
+
+### Revisie: H9 bestaat niet in de Sonocotta-repository
+
+`hardware/3-louder-esp32/` bevat voor klassieke ESP32 `rev-h` t/m `rev-h7`
+(`rev-j*`/`rev-k*` zijn ESP32-S3). Een omgekeerde "6" leest als "9"; mogelijk is
+het board H6, of een ongepubliceerde revisie. Eén foto van het opschrift beslist.
+Het H7-schema draagt zelf nog titelblok "REV: H6"; H6 en H7 verschillen in de
+tekst alleen in SDOUT-label en LAN/SPI-netlabels.
+
+### Voeding volgens H6/H7-schema (blad 2)
+
+`[confirmed: H7-schema blad 2, 2026-11-15]` voor de schakeling; gedrag `[verify]`:
+
+- USB-C `VBUS` → Schottky D4 (1N5819WS) → `VDD`.
+- DC-jack DC2 / schroefklem U6 → diode D3 (M7) → `VDD`.
+- `VDD` voedt PVDD van de TAS5805M en buck U3 (XL1509-3.3) → 3V3.
+
+Gevolgen, nog te bevestigen:
+
+- Op alleen USB is `VDD` ≈ 4,7 V: net boven TAS5805M-minimum 4,5 V en begrensd
+  door USB-stroom en D4. Playback op laag volume waarschijnlijk mogelijk, niet
+  representatief. `[assumption]`
+- De twee bronnen vormen een diode-OR: USB-C tegelijk met 12 V lijkt veilig voor
+  de pc. `[assumption]` — de waarschuwingstekst bij VIN op de achterkant lezen
+  vóór gelijktijdig aansluiten.
+
+### Overige aansluitingen op H6/H7 (niet in gebruik voor Jarvis)
+
+USR-ES1/W5500-LAN (SPI 18/19/23, CS 5, INT 35, RST 14), IR-ontvanger (GPIO39),
+OLED-FPC (SPI, CS1 15, DC 4, RES 32), RGB-LED-header (GPIO12, strapping-pin),
+CH340C met auto-reset.
 
 Open vragen voor deze configuratie:
 
-- Schema van H9 vinden (Sonocotta-repository) en vergelijken met de H6+-pinout. `[verify]`
-- Speelt de TAS5805M op alleen USB-C-voeding (5 V PVDD)? Bepaalt of de eerste
-  playbackproef zonder 12 V-adapter kan. `[verify]`
-- Mag USB-C tegelijk met de 12 V-adapter aangesloten zijn (debuggen tijdens
-  deployment)? Op de achterkant staat een waarschuwing bij VIN. `[verify]`
+- Revisieopschrift en WROVER-opschrift fotograferen. `[verify]`
+- Waarschuwingstekst bij VIN lezen. `[verify]`
 - Impedantie en vermogen van beide luidsprekers.
 
 Vóór implementatie vastleggen:
@@ -41,7 +67,8 @@ Sonocotta documenteert microfoonheaders vanaf klassieke revisie H6. Schema's
 noemen ICS-43434-modules; de README noemt INMP441 als getest. Behandel de posities
 als aansluitingen voor modules, niet als bewezen footprints voor kale MEMS-chips.
 
-Voor de onderzochte H6+-documentatie:
+Voor H6+; netlabels gecontroleerd in het H7-schema blad 1
+`[confirmed: H7-schema, 2026-11-15]`, fysieke board `[verify]`:
 
 | Signaal | Klassieke ESP32 GPIO |
 | --- | --- |
@@ -60,6 +87,21 @@ De TAS5805M is geen microfoon-ADC. TI specificeert 2 × 23 W bij 8 Ω, 21 V en
 PVDD-bereik is 4,5–26,4 V. Een passende 12V/3A-voeding is een kandidaat voor
 eerste laagvolumetests, na connector- en polariteitscontrole. BTL-luidsprekeruitgangen
 zijn geen line-out: verbind geen luidsprekerklem met massa of een andere uitgang.
+
+## Lokale bestanden
+
+| Bestand | Bron | SHA-256 | Licentie | Status |
+| --- | --- | --- | --- | --- |
+| `sonocotta/2508-louder-esp32-h6-schematic.pdf` | sonocotta/esp32-audio-dock @ `23fc578e`, `hardware/3-louder-esp32/rev-h6/` | `ff6266e3…` | Apache-2.0 (repo) `[verify]` | downloaded 2026-11-15 |
+| `sonocotta/2508-louder-esp32-h7-schematic.pdf` | idem, `rev-h7/` (titelblok zegt H6) | `4c2e9e8f…` | idem | downloaded 2026-11-15 |
+| `sonocotta/2508-louder-esp32-h7-pcb.pdf` | idem, `rev-h7/` | `6d4a49c7…` | idem | downloaded 2026-11-15 |
+| `seeed_louder_esp32_h2_schematic.pdf` | Seeed productpagina `[verify]` | `4cd5b070…` | onbekend | needs_check; revisie H2, niet dit board |
+| `seeed_louder_esp32_users_manual_en.pdf` | idem | `fcbf84d4…` | onbekend | needs_check |
+| `seeed_louder_esp32_testing_procedure.pdf` | idem | `9e057f91…` | onbekend | needs_check |
+| `seeed_102991934_product.pdf`, `seeed_102991934_page-{4,5}.jpg` | idem | `a81c0cdb…`, `24002b4d…`, `ae7b9ead…` | onbekend | needs_check |
+
+Volledige hashes: `sha256sum hardware/louder_esp32/{sonocotta/*,seeed_*}`.
+PDF's lezen/renderen: `pixi run pdftoppm -r 150 -png <pdf> <prefix>`.
 
 ## Bronnen en bewaring
 

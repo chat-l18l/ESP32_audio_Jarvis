@@ -75,3 +75,12 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
   standards) in het Nederlands; `*-spec.md` en het protocol in het Engels.
   Code, identifiers en commentaar in de code in het Engels.
 - Open: taal van `plan-*.md` en bringup-READMEs.
+
+## B-009 Hulpmiddelen via pixi
+
+- Datum: 2026-11-15 — Status: vastgesteld
+- Besluit: alle ontwikkelhulpmiddelen komen via een pixi-omgeving in de repo-root
+  (`pixi.toml`, `pixi.lock` in git, `.pixi/` niet). Eerste inhoud: `poppler`,
+  `poppler-data` (pdf's lezen/renderen). Commando's: `pixi run <tool>`.
+- Open: PlatformIO via pixi, en waar PlatformIO zijn toolchains bewaart
+  (`PLATFORMIO_CORE_DIR`), beslissen bij de eerste firmwarestap.
