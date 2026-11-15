@@ -55,3 +55,23 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 - Besluit: de eerste commit bevat alle aanwezige bestanden, inclusief de
   Seeed-pdf's en -afbeeldingen in `hardware/louder_esp32/`. Bron, licentie en
   revisiestatus daarvan zijn nog een open punt.
+
+## B-007 Doc-soorten en herkomstmarkering (naar omnibot/sdc2026)
+
+- Datum: 2026-11-15 — Status: vastgesteld
+- Besluit:
+  - Doc-soorten herkenbaar aan de naam: `docs/<onderwerp>-spec.md` voor
+    contracten (met versie, bv. "v1"), `docs/plan-<onderwerp>.md` voor onderzoek
+    en plan. Bringup-checklists staan in de README van het proefproject.
+  - Feiten krijgen een herkomstlabel: `[confirmed: <bron>, <datum>]`,
+    `[verify]` of `[assumption]`. Bron kan zijn: datasheet §, meting, gebruiker.
+- Niet overgenomen: verplicht statusblok bovenaan, open vragen gegroepeerd op blokkade.
+- Bron: `/home/oetelaar/tmp_omnibot_ng/omnibot/apps/sdc2026/docs`, bekeken 2026-11-15.
+
+## B-008 Taal van documentatie
+
+- Datum: 2026-11-15 — Status: vastgesteld
+- Besluit: werkdocs (status, besluiten, AGENTS, README, architectuur, coding
+  standards) in het Nederlands; `*-spec.md` en het protocol in het Engels.
+  Code, identifiers en commentaar in de code in het Engels.
+- Open: taal van `plan-*.md` en bringup-READMEs.

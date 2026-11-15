@@ -10,7 +10,8 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 
 ## Laatste sessie
 
-- Repository verkend; werkwijze B-001 t/m B-006 vastgelegd in
+- omnibot/sdc2026-docs bekeken als inspiratie (B-007).
+- Repository verkend; werkwijze B-001 t/m B-008 vastgelegd in
   [decisions.md](decisions.md).
 
 ## Open vragen
@@ -18,6 +19,12 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 Werkwijze:
 
 - [x] Contractvormen (B-005) en eerste commit (B-006) afgestemd.
+- [ ] Taal van `plan-*.md` en bringup-READMEs (B-008).
+- [ ] Code-commentaar in het Engels aangenomen in B-008; bevestigen.
+
+Tooling:
+
+- [ ] `poppler-utils` ontbreekt; nodig om de pdf's in `hardware/` te lezen.
 
 Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 

@@ -4,7 +4,8 @@
 
 - Lees eerst `docs/status.md` (waar we zijn) en `docs/decisions.md` (afgestemde
   besluiten). Werk `status.md` bij aan het eind van een sessie; leg elk afgestemd
-  detail vast als genummerd besluit.
+  detail vast als genummerd besluit. Markeer feiten met `[confirmed: …]`,
+  `[verify]` of `[assumption]` (B-007).
 - Lees `README.md`, `docs/architecture.md` en
   `docs/contributing/coding-standards.md` vóór wijzigingen.
 - Het aanwezige board is een Louder met klassieke ESP32-WROVER, niet een S3/P4.
