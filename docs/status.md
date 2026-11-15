@@ -10,7 +10,7 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 
 ## Laatste sessie
 
-- H6/H7-schema's van Sonocotta opgehaald; pixi-omgeving opgezet.
+- H9 online bevestigd (Sonocotta PR #207); H6/H7-schema's opgehaald; pixi-omgeving opgezet.
 - Hardware: revisie H9, voeding, luidsprekers vastgelegd in het dossier.
 - omnibot/sdc2026-docs bekeken als inspiratie (B-007).
 - Repository verkend; werkwijze B-001 t/m B-009 vastgelegd in
@@ -31,8 +31,10 @@ Tooling:
 
 Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 
-- [ ] Revisie: gebruiker leest H9, Sonocotta kent voor klassieke ESP32 alleen
-      t/m H7. Foto van opschrift nodig (6 vs 9?).
+- [x] Revisie H9 bevestigd (gebruiker + Sonocotta PR #207). Geen H9-schema
+      gepubliceerd; H7-schema als referentie. Nieuw: VDD/10 op GPIO36.
+- [ ] Alle verschillen H9 ↔ H7 onbekend; H9-bestanden ophalen zodra gepubliceerd.
+- [ ] ESP32-chiprevisie (ESPHome-config vraagt ≥ 3.1); uit bootlog halen.
 - [x] Schema's H6 en H7 opgehaald en vastgelegd met bron en SHA-256; pinout
       in het H7-schema komt overeen met de H6+-tabel.
 - [ ] Waarschuwingstekst bij VIN lezen; diode-OR suggereert dat USB-C + 12 V

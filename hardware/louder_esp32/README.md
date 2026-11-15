@@ -5,24 +5,29 @@
 | Eigenschap | Waarde | Herkomst |
 | --- | --- | --- |
 | Board | Louder-ESP32 met ESP32-WROVER | `[confirmed: gebruiker, 2026-11-15]` |
-| Printrevisie | gebruiker leest H9; Sonocotta publiceert voor klassieke ESP32 alleen t/m H7 | `[verify]` (foto) |
+| Printrevisie | H9 (nieuw) | `[confirmed: gebruiker + Sonocotta PR #207, 2026-11-15]` |
+| Voedingsmeting | VDD/10-deler op GPIO36 (ADC1_CH0), vanaf H9 | `[confirmed: Sonocotta PR #207]`, werking `[verify]` |
 | Microfoonposities | twee, onbezet; nog geen modules gekozen | `[confirmed: gebruiker, 2026-11-15]` |
 | Voeding ontwikkeling | alleen USB-C (editen/flashen) | `[confirmed: gebruiker, 2026-11-15]` |
 | Voeding deployment | 12 V / 3 A-adapter; connector en polariteit open | `[confirmed: gebruiker, 2026-11-15]` |
 | Luidsprekers | twee (stereo); impedantie en vermogen open | `[confirmed: gebruiker, 2026-11-15]` |
 | Modulevariant | ESP32-WROVER-IE (8MB) volgens H6/H7-schema | `[verify]` (opschrift module) |
 | Flash/PSRAM-verdeling | onbekend | `[verify]` |
-| Pinout gelijk aan H7-schema | waarschijnlijk | `[verify]` (revisie bevestigen) |
+| Pinout gelijk aan H7-schema | ja, volgens ESPHome-config op main (na H9) | `[confirmed: louder-esp32-idf.yaml @ 23fc578e]`; mic GPIO13 daar niet genoemd `[verify]` |
 
 Er staan nog geen eigen foto's in deze map.
 
-### Revisie: H9 bestaat niet in de Sonocotta-repository
+### Revisie H9: geen schema gepubliceerd
 
-`hardware/3-louder-esp32/` bevat voor klassieke ESP32 `rev-h` t/m `rev-h7`
-(`rev-j*`/`rev-k*` zijn ESP32-S3). Een omgekeerde "6" leest als "9"; mogelijk is
-het board H6, of een ongepubliceerde revisie. Eén foto van het opschrift beslist.
-Het H7-schema draagt zelf nog titelblok "REV: H6"; H6 en H7 verschillen in de
-tekst alleen in SDOUT-label en LAN/SPI-netlabels.
+Sonocotta noemt H9 in [PR #207](https://github.com/sonocotta/esp32-audio-dock/pull/207)
+(gemerged 2026-10-30), maar `hardware/3-louder-esp32/` bevat t/m `rev-h7`
+(stand `23fc578e`). Het H7-schema is daarom de dichtstbijzijnde referentie.
+Bekend verschil H9 ten opzichte van H7: een 10:1-deler van de voeding naar
+GPIO36 (`SENSOR_VP`, in H7 onaangesloten). Andere verschillen zijn onbekend `[verify]`.
+
+Volgens dezelfde PR: lees met 12 dB attenuatie; absolute nauwkeurigheid op H9
+nog niet door Sonocotta gemeten. De ESPHome-config vraagt ESP32-chiprevisie
+≥ 3.1 (`minimum_chip_revision`); of dit board dat heeft `[verify]` (bootlog).
 
 ### Voeding volgens H6/H7-schema (blad 2)
 
@@ -89,6 +94,9 @@ eerste laagvolumetests, na connector- en polariteitscontrole. BTL-luidsprekeruit
 zijn geen line-out: verbind geen luidsprekerklem met massa of een andere uitgang.
 
 ## Lokale bestanden
+
+Geen H9-bestanden beschikbaar; zodra Sonocotta `rev-h9` publiceert, ophalen en
+vergelijken met H7.
 
 | Bestand | Bron | SHA-256 | Licentie | Status |
 | --- | --- | --- | --- | --- |
