@@ -10,6 +10,7 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 
 ## Laatste sessie
 
+- Hardware: revisie H9, voeding, luidsprekers vastgelegd in het dossier.
 - omnibot/sdc2026-docs bekeken als inspiratie (B-007).
 - Repository verkend; werkwijze B-001 t/m B-008 vastgelegd in
   [decisions.md](decisions.md).
@@ -28,10 +29,13 @@ Tooling:
 
 Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 
-- [ ] Printrevisie van het aanwezige board. Het lokale schema is van H2, terwijl
-      microfoonheaders volgens het dossier pas vanaf H6 bestaan.
-- [ ] Hardware-README zegt dat er geen lokale schema's zijn, maar er staan pdf's;
-      bron, SHA-256, licentie en status ontbreken (nu wel in git, B-006).
+- [x] Printrevisie: H9. Lokaal H2-schema is dus niet van toepassing.
+- [ ] H9-schema vinden; pinout vergelijken met H6+-tabel.
+- [ ] Bron, SHA-256 en licentie van de Seeed-pdf's vastleggen.
+- [ ] Werkt de versterker op alleen USB-C? Mag USB-C tegelijk met 12 V?
+- [ ] Luidsprekers: impedantie en vermogen (twee stuks, stereo).
+- [ ] Microfoonmodule kiezen (nog geen; blokkeert eerste mijlpaal niet).
+- [ ] Foto's van beide boardzijden in `hardware/louder_esp32/`.
 
 ## Volgende stap
 

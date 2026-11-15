@@ -2,10 +2,30 @@
 
 ## Aanwezig exemplaar
 
-Door de gebruiker bevestigd: Louder-board met ESP32-WROVER en twee onbezette
-microfoonposities. Exacte printrevisie, modulevariant, flash/PSRAM en fysieke
-padvolgorde zijn nog niet vastgesteld. Er staan nog geen eigen foto's of lokale
-kopieën van schema's in deze map.
+| Eigenschap | Waarde | Herkomst |
+| --- | --- | --- |
+| Board | Louder-ESP32 met ESP32-WROVER | `[confirmed: gebruiker, 2026-11-15]` |
+| Printrevisie | H9 | `[confirmed: gebruiker, 2026-11-15]` |
+| Microfoonposities | twee, onbezet; nog geen modules gekozen | `[confirmed: gebruiker, 2026-11-15]` |
+| Voeding ontwikkeling | alleen USB-C (editen/flashen) | `[confirmed: gebruiker, 2026-11-15]` |
+| Voeding deployment | 12 V / 3 A-adapter; connector en polariteit open | `[confirmed: gebruiker, 2026-11-15]` |
+| Luidsprekers | twee (stereo); impedantie en vermogen open | `[confirmed: gebruiker, 2026-11-15]` |
+| Modulevariant, flash/PSRAM | onbekend | `[verify]` |
+| Pinout H9 gelijk aan H6+-tabel hieronder | onbekend | `[verify]` |
+
+Er staan nog geen eigen foto's in deze map. De lokale Seeed-pdf's zijn afkomstig
+van de productpagina; `seeed_louder_esp32_h2_schematic.pdf` is van revisie **H2**
+en is dus **niet** het schema van dit board. Bron-URL, SHA-256 en licentie van de
+pdf's zijn nog niet vastgelegd (status `needs_check`).
+
+Open vragen voor deze configuratie:
+
+- Schema van H9 vinden (Sonocotta-repository) en vergelijken met de H6+-pinout. `[verify]`
+- Speelt de TAS5805M op alleen USB-C-voeding (5 V PVDD)? Bepaalt of de eerste
+  playbackproef zonder 12 V-adapter kan. `[verify]`
+- Mag USB-C tegelijk met de 12 V-adapter aangesloten zijn (debuggen tijdens
+  deployment)? Op de achterkant staat een waarschuwing bij VIN. `[verify]`
+- Impedantie en vermogen van beide luidsprekers.
 
 Vóór implementatie vastleggen:
 
