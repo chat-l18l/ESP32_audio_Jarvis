@@ -1,0 +1,14 @@
+# Buildproducten en lokale configuratie
+.pio/
+build/
+build-native/
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+
+# ESP-IDF: defaults zijn bron; gegenereerde backups niet.
+sdkconfig.old
+sdkconfig.*.old
