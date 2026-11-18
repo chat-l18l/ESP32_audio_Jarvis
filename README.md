@@ -6,6 +6,16 @@ Linux-coördinator, een GPU-pc en verwisselbare lokale en cloudmodellen.
 **Status:** ontwerp en hardware-identificatie. Er is nog geen firmwareproject,
 hardwarevalidatie of complete verzameling schema's en foto's in deze repository.
 
+## Inspiratie: JARVIS in het lab van Tony Stark
+
+Onze inspiratie is [JARVIS in *Iron Man* (2008)](https://www.youtube.com/watch?v=DZaAFADoF1M).
+Wat ons aanspreekt is hoe weinig Tony hoeft uit te leggen: een verwijzing naar
+de buitenmantel van een satelliet uit een eerder project kan genoeg zijn om samen
+verder te ontwerpen. In ons lab willen we onderzoeken wat daarvoor nodig is:
+welk eerder werk bedoelt iemand, waar vinden we het terug en wanneer is een
+suggestie welkom? Het [onderzoeksplan voor context en initiatief](docs/plan-context-en-initiatief.md)
+vertaalt die inspiratie naar voorbeelden en proeven voor studenten.
+
 ## Uitgangspunt
 
 Minder code, minder mechanismen, duidelijke contracten. Bouw de kleinste werkende

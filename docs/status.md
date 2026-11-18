@@ -26,6 +26,12 @@ Eerder:
 
 ## Open vragen
 
+### Onderzoeksbacklog
+
+- [ ] [B-012](decisions.md#b-012-alle-berichten-verwijst-naar-een-vaste-selectie) toetsen: vaste berichtselectie bij vertraagde spraak, dubbele opdrachten en gedeeltelijke uitval. Voor een losse opdracht zonder eerder aangeboden lijst de gebruikersinteractie afstemmen.
+
+- [ ] [Context en initiatief in het lab](plan-context-en-initiatief.md): literatuur verzamelen en met twee labscenario's toetsen welke kennis en acties buiten de LLM-gesprekscontext moeten blijven bestaan.
+
 ### Protocolkeuze
 
 - [x] Voorlopig: discovery en gebruikerskeuze op de ESP32 (B-010).
