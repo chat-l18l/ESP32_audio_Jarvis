@@ -21,14 +21,23 @@ Eenvoud mag niet afhangen van het overslaan van foutafhandeling.
 
 ## Wegwijzer
 
+- [Documentatie op soort: afweging, open vraag, besluit, contract, API of proef](docs/README.md)
+
 - [Status: waar we zijn](docs/status.md)
 - [Besluitenlog](docs/decisions.md)
 - [Coding standards](docs/contributing/coding-standards.md)
-- [Architectuur en eerste mijlpaal](docs/architecture.md)
+- [Systeemdiagram: volg een gesproken vraag van microfoon tot luidspreker](docs/architecture.md#systeemdiagram)
+- [Eerste firmwaremijlpaal](docs/architecture.md#eerste-firmwaremijlpaal)
 - [Boardidentificatie en bronnen](hardware/louder_esp32/README.md)
 - [Instructies voor coding agents](AGENTS.md)
 
 ## Indeling
+
+Dit is een door de docent gebouwd voorbeeld voor ICT-studenten. Begin met het
+systeemdiagram, zoek de afgebeelde onderdelen in het hardwaredossier en vergelijk
+je verwachtingen met de acceptatiecriteria van de eerste proef.
+Broncode en documentatie horen bij elkaar in de [GitHub-repository](https://github.com/chat-l18l/ESP32_audio_Jarvis).
+Geteste firmware kan later als binary bij een [getagde release](https://github.com/chat-l18l/ESP32_audio_Jarvis/releases), met boardrevisie, flashinstructies en checksum.
 
 We volgen de organisatie van Omnibot: documentatie bij het onderwerp en zelfstandige
 PlatformIO-projecten per toepassing of hardwareproef. Mappen ontstaan pas wanneer

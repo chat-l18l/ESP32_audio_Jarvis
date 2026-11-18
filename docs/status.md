@@ -2,13 +2,21 @@
 
 Lees dit eerst aan het begin van een sessie; werk het bij aan het eind.
 
-Laatst bijgewerkt: 2026-11-15
+Laatst bijgewerkt: 2026-11-18
 
 ## Fase
 
 Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 
 ## Laatste sessie
+
+- [B-011](decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scherm): drie knoppen. Lokaal terugkeren naar een hoorbaar hoofdniveau staat vast; het keuzegebaar is nog een voorstel.
+
+- Voorlopig [B-010](decisions.md#b-010-lokale-dienstkeuze-en-push-to-talk-in-het-lab): lokaal diensten ontdekken en kiezen, menuspraak op de ESP32 en PTT in v1. Het [labscenario](architecture.md#labscenario) beschrijft voorraadcorrectie en uitval.
+
+- [Documentatiewegwijzer](README.md) en [protocolafweging met proefopzet](plan-protocolkeuze.md) toegevoegd. De transportkeuze staat open.
+
+Eerder:
 
 - H9 online bevestigd (Sonocotta PR #207); H6/H7-schema's opgehaald; pixi-omgeving opgezet.
 - Hardware: revisie H9, voeding, luidsprekers vastgelegd in het dossier.
@@ -17,6 +25,16 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
   [decisions.md](decisions.md).
 
 ## Open vragen
+
+### Protocolkeuze
+
+- [x] Voorlopig: discovery en gebruikerskeuze op de ESP32 (B-010).
+- [ ] Welk keuzegebaar werkt zonder scherm het beste: kort voor status en lang voor de voorgelezen optie, of een optie kiezen met meerdere korte drukken? Zie de [gebruikersproef](architecture.md#gesproken-bediening).
+- [ ] Discovery via directe aankondigingen of een catalogus op Linux? Hoe onderscheiden we beschikbare diensten van verdwenen of nog ladende instanties?
+- [ ] Vóór de proef: welke wachtrijduur, tijd tot stilte en minimale vrije interne RAM accepteren we? Wat doen we met te late audio?
+- [ ] Na de proef: welke topologie en welk transport kiezen we, op grond van welke metingen? Zie de [afweging en proefopzet](plan-protocolkeuze.md).
+
+### Overige open punten
 
 Werkwijze:
 
@@ -31,9 +49,8 @@ Tooling:
 
 Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 
-- [x] Revisie H9 bevestigd (gebruiker + Sonocotta PR #207). Geen H9-schema
-      gepubliceerd; H7-schema als referentie. Nieuw: VDD/10 op GPIO36.
-- [ ] Alle verschillen H9 ↔ H7 onbekend; H9-bestanden ophalen zodra gepubliceerd.
+- [x] Revisie H9 bevestigd (gebruiker + Sonocotta PR #207). H9-schema en printtekening op 2026-11-18 opgenomen in het hardwaredossier.
+- [ ] Eerdere pinout- en voedingsanalyse op basis van H7 vergelijken met H9 en de fysieke print.
 - [ ] ESP32-chiprevisie (ESPHome-config vraagt ≥ 3.1); uit bootlog halen.
 - [x] Schema's H6 en H7 opgehaald en vastgelegd met bron en SHA-256; pinout
       in het H7-schema komt overeen met de H6+-tabel.

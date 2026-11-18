@@ -8,18 +8,54 @@
 | PlatformIO met ESP-IDF | Sluit aan bij de projecten en voorkeur van de gebruiker. |
 | Eigen firmware bij voorkeur in C | Kleine expliciete modules en zichtbare kosten. |
 | Zelfstandige Linux-coördinator | Geen Home Assistant als fundament. |
-| STT, LLM en TTS buiten de ESP32 | Zware verwerking en modelkeuze blijven verwisselbaar. |
+| STT, LLM en TTS voor assistentantwoorden op de backend | Zware verwerking blijft verwisselbaar. Voor lokale menuspraak geldt voorlopig B-010. |
 | GPU-API aanvankelijk via SSH-tunnel | De GPU-pc is momenteel via SSH bereikbaar. |
 | Ontwerp eerst, kleine hardwareproeven daarna | Voorkomt grote implementaties op onbewezen aannamen. |
 
-## Verantwoordelijkheden
+## Systeemdiagram
 
-```text
-Louder ESP32 -- audio + besturing --> lokale Linux-coördinator
-                                      |-- Whisper / lokale TTS
-                                      |-- model-API via SSH-tunnel --> GPU-pc
-                                      `-- officiële API's --> cloudproviders
+Ontwerp voor één gespreksbeurt. De kaders geven aan waar een onderdeel draait;
+de labels op de pijlen vertellen wat het ontvangt of teruggeeft.
+
+```mermaid
+flowchart TB
+    subgraph terminal["Spraakterminal · Louder-ESP32 en randapparatuur"]
+        mic["I²S-microfoonmodule (nog te kiezen)"] -->|spraak| esp["ESP32-WROVER · PlatformIO / ESP-IDF"]
+        ptt["PTT-knop"] -->|opname vrijgeven| esp
+        keys["Keuze en Escape"] -->|lokale menubediening| esp
+        esp -->|dienstnamen of uitvalmelding| menu["Lokale TTS"]
+        menu -->|menuspraak via I²S| amp
+        esp -->|I²S-audio| amp["TAS5805M-versterker"]
+        amp -->|stereo| speakers["Passieve luidsprekers"]
+    end
+    subgraph host["Lokale Linux-pc"]
+        coord["Coördinator · beheert de gespreksbeurt"]
+        coord -->|opname| stt["Whisper · spraak naar tekst"]
+        stt -->|transcript| coord
+        coord -->|antwoordtekst| tts["Piper · tekst naar spraak"]
+        tts -->|antwoordaudio| coord
+    end
+    esp -->|microfoonaudio| coord
+    coord -->|antwoordaudio| esp
+    subgraph gpu["GPU-pc · 2 × RTX 4090"]
+        ollama["Ollama · lokaal model, bijvoorbeeld Mistral"]
+    end
+    coord <-->|vraag en antwoord via API in SSH-tunnel| ollama
+    subgraph cloud["Cloud · optioneel"]
+        llm["Taalmodel · OpenAI, Claude, Grok of Gemini"]
+        voice["Spraaksynthese · ElevenLabs"]
+    end
+    coord <-->|tekst via provider-API| llm
+    coord <-->|tekst heen, audio terug| voice
 ```
+
+Het diagram toont de assistentroute na dienstkeuze. Intercom en muziek hebben hun eigen bestemming; discovery en selectie staan nog los van het gekozen transport.
+
+**Leesvoorbeeld voor studenten:** volg één vraag vanaf de microfoon. Whisper levert
+het transcript; de coördinator vraagt Ollama om een antwoord en geeft de antwoordtekst
+aan Piper. Volg de audio terug tot de luidsprekers. Bij deze route verlaat niets het
+eigen systeem. Een cloudmodel of cloudstem vervangt alleen de gekozen stap. Het
+transportprotocol tussen ESP32 en Linux staat nog open; zie de [protocolafweging en vergelijkingsproef](plan-protocolkeuze.md).
 
 De ESP32 beheert capture, playback, mute en lokale bediening. Eén audio-eigenaar
 beheert de samenhang tussen I²S en versterkertoestand. Pas taken toevoegen wanneer
@@ -29,6 +65,24 @@ credentials en annulering. SSH is beheer/tunnel, niet het inferenceprotocol.
 Provider- en model-ID's zijn Linux-configuratie. STT/LLM/TTS hebben verschillende
 rollen en capabilities; ontwerp hun concrete interfaces zodra de eerste werkende
 spraakpipeline die nodig heeft. Geen generiek pluginframework vooraf.
+
+## Labscenario
+
+Voorlopig ontwerp volgens [B-010](decisions.md#b-010-lokale-dienstkeuze-en-push-to-talk-in-het-lab). De gebruiker loopt met de microfoon door het lab. De ESP32 ontdekt de gebruikersdiensten; welke modellen achter een assistent draaien is een keuze van diens backend. Linux kan een lijst van beschikbare instanties leveren of de ESP32 kan hun aankondigingen zelf ontvangen. Beide passen bij deze taakverdeling; geen van beide is al gekozen.
+
+1. De gebruiker kiest de standaardassistent, houdt PTT ingedrukt en vraagt: ‘Waar liggen de scope-probes?’ Na loslaten stopt de opname. De backend raadpleegt de inventaris: ‘Kast 1, lade B. Volgens de registratie liggen er vier.’
+2. Bij de kast drukt de gebruiker opnieuw: ‘Er lagen maar twee probes.’ De backend koppelt die observatie aan dezelfde lade en hetzelfde artikel. **Twee aangetroffen is geen uitboeking van twee.** Is onduidelijk of het aantal vóór of ná het pakken geldt, vraag dat na vóór een wijziging. Na wegvallend wifi mag dezelfde correctie niet blind opnieuw worden uitgevoerd.
+3. Verdwijnt de standaardassistent, dan spreekt de ESP32 de actuele alternatieven uit: bijvoorbeeld ‘Assistent groep 2’, ‘Intercom’ of ‘Muziek’. Pas na keuze gaat een nieuwe beurt naar die bestemming. Zonder bereikbare dienst geeft het board lokaal een melding; het bewaart geen opname om later naar een andere bestemming te sturen.
+
+**Voorgestelde acceptatieproeven:** controleer bij boot, tijdens het menu en na loslaten dat er geen nieuwe microfoonsamples worden opgenomen of verstuurd (ook geen pre-roll). Schakel alleen de primaire assistent uit: lokale TTS moet nog werken en de gebruiker moet een beschikbare testversie kunnen kiezen. Controleer aan de ontvangende kant dat uitsluitend de gekozen instantie de volgende beurt krijgt. Test apart met het netwerk helemaal weg: alleen de lokale melding wordt dan verwacht. Dit zijn ontwerpcriteria, geen gemeten resultaten.
+
+### Gesproken bediening
+
+De [drie knoprollen](decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scherm) staan vast. **Voorstel voor de eerste gebruikersproef:** één korte druk op Keuze geeft altijd antwoord op ‘waar ben ik?’, bijvoorbeeld: ‘Actief: labassistent, standaard. Menu: diensten. Optie twee: intercom.’ Dit verandert de selectie niet. Laat een lange druk op het hoofdniveau het keuzemenu openen. Daar leest de ESP32 de beschikbare opties achtereenvolgens voor, met een pauze na iedere naam; lang drukken bevestigt de laatst volledig uitgesproken optie. Tijdens een nieuwe naam nog geen bevestiging accepteren. Meld na bevestiging welke dienst actief is.
+
+Vergelijk dit met drie korte drukken voor optie drie. Direct nummeren kan sneller zijn, maar één druk kan dan pas als status worden herkend nadat de tijd voor een tweede druk is verstreken. In beide ontwerpen mag een wijziging in de dienstenlijst een al voorgelezen optie niet stilzwijgend vervangen door een andere dienst.
+
+**Praktijkproef (nog niet uitgevoerd):** laat iemand zonder scherm vanuit een onbekend submenu de actieve dienst opvragen en met Escape naar ‘Hoofdmenu’ teruggaan. Druk daar nogmaals op Escape: dezelfde hoofdtoestand moet hoorbaar blijven zonder dienstwissel of opname. Herhaal zonder backend en met een dienst die tussen voorlezen en bevestigen verdwijnt.
 
 ## Audiohypothese: eerst bewijzen
 

@@ -17,11 +17,13 @@
 
 Er staan nog geen eigen foto's in deze map.
 
-### Revisie H9: geen schema gepubliceerd
+### Revisie H9: eigen schema en printtekening
 
 Sonocotta noemt H9 in [PR #207](https://github.com/sonocotta/esp32-audio-dock/pull/207)
-(gemerged 2026-10-30), maar `hardware/3-louder-esp32/` bevat t/m `rev-h7`
-(stand `23fc578e`). Het H7-schema is daarom de dichtstbijzijnde referentie.
+(gemerged 2026-10-30). Voor de bedrading is het
+[H9-schema](sonocotta/2610-louder-esp32-h9-schematic.pdf) samen met de
+[H9-printtekening](sonocotta/2610-louder-esp32-h9-pcb.pdf) nu de primaire referentie.
+Onderstaande eerdere analyses op basis van H6/H7 moeten hiertegen worden gecontroleerd.
 Bekend verschil H9 ten opzichte van H7: een 10:1-deler van de voeding naar
 GPIO36 (`SENSOR_VP`, in H7 onaangesloten). Andere verschillen zijn onbekend `[verify]`.
 
@@ -95,11 +97,22 @@ zijn geen line-out: verbind geen luidsprekerklem met massa of een andere uitgang
 
 ## Lokale bestanden
 
-Geen H9-bestanden beschikbaar; zodra Sonocotta `rev-h9` publiceert, ophalen en
-vergelijken met H7.
+De [Seeed-productfiche voor SKU 102991934](seeed_102991934_product.pdf)
+([origineel bij Seeed](https://files.seeedstudio.com/Bazaar/product_pdf/102991934.pdf))
+bevat de [fotogalerij op p. 4](seeed_102991934_page-4.jpg) en het
+[geannoteerde hardwareoverzicht op p. 5](seeed_102991934_page-5.jpg).
+Zoek op die foto's de WROVER, de TAS5805M en de speakerklemmen uit het
+[systeemdiagram](../../docs/architecture.md#systeemdiagram). De foto's illustreren
+het product; het schema waarnaar Seeed op p. 6 verwijst is revisie H2, niet H9.
+
+Controle 2026-11-18: de vier bestaande Seeed-PDF's en drie Sonocotta-PDF's voor
+H6/H7 waren byte-identiek aan de online bronnen. De twee H9-PDF's komen uit
+[deze upstreamversie](https://github.com/sonocotta/esp32-audio-dock/tree/15f7d97e0e4f53390edc7aa212a8a5ac83b9e30f/hardware/3-louder-esp32/rev-h9).
 
 | Bestand | Bron | SHA-256 | Licentie | Status |
 | --- | --- | --- | --- | --- |
+| `sonocotta/2610-louder-esp32-h9-schematic.pdf` | Sonocotta `15f7d97e`, `rev-h9` | `3d13abfc9745d68fbf0a3e913a1cc0b4a77eff05aafe2ff87ee3b0fbcda0f7ee` | repo-licentie `[verify]` | downloaded 2026-11-18 |
+| `sonocotta/2610-louder-esp32-h9-pcb.pdf` | idem | `090486581fd3e46a891600a4868a005df939677121a24ad98cbf54dc9b2d1e84` | idem | downloaded 2026-11-18 |
 | `sonocotta/2508-louder-esp32-h6-schematic.pdf` | sonocotta/esp32-audio-dock @ `23fc578e`, `hardware/3-louder-esp32/rev-h6/` | `ff6266e3…` | Apache-2.0 (repo) `[verify]` | downloaded 2026-11-15 |
 | `sonocotta/2508-louder-esp32-h7-schematic.pdf` | idem, `rev-h7/` (titelblok zegt H6) | `4c2e9e8f…` | idem | downloaded 2026-11-15 |
 | `sonocotta/2508-louder-esp32-h7-pcb.pdf` | idem, `rev-h7/` | `6d4a49c7…` | idem | downloaded 2026-11-15 |

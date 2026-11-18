@@ -83,4 +83,19 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
   (`pixi.toml`, `pixi.lock` in git, `.pixi/` niet). Eerste inhoud: `poppler`,
   `poppler-data` (pdf's lezen/renderen). Commando's: `pixi run <tool>`.
 - Open: PlatformIO via pixi, en waar PlatformIO zijn toolchains bewaart
-  (`PLATFORMIO_CORE_DIR`), beslissen bij de eerste firmwarestap.
+   (`PLATFORMIO_CORE_DIR`), beslissen bij de eerste firmwarestap.
+
+## B-010 Lokale dienstkeuze en push-to-talk in het lab
+
+- Datum: 2026-11-18 — Status: voorstel (voorlopig besluit van de gebruiker).
+- De ESP32 ontdekt beschikbare diensten en laat de gebruiker via lokale TTS kiezen. Onderscheid **functie** (labassistent, intercom, muziek) van **instantie** (bijvoorbeeld de standaardassistent, `test1` van groep 1 of de versie van groep 2). Bij uitval biedt het board de nog beschikbare opties aan; de gebruiker bepaalt de bestemming van zijn spraak.
+- In v1 opent de gebruiker met de draagbare microfoon iedere spreekbeurt via push-to-talk. Geen wake word of achtergrondopname: ook een vervolgvraag bij de kast begint met de knop.
+- De geselecteerde backend verwerkt de vraag en eventuele voorraadcorrectie. Lokale TTS bedient het keuzemenu ook als de primaire assistent wegvalt. De haalbaarheid van verstaanbare Nederlandse menuspeech op WROVER is te testen.
+- Open: lokale bediening van het menu, manier van discovery en taakverdeling met Linux. Zie [labscenario en voorgestelde proeven](architecture.md#labscenario).
+
+## B-011 Drie knoppen voor bediening zonder scherm
+
+- Datum: 2026-11-18 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-18]`.
+- **Spreek (PTT)** opent de microfoon voor de spreekbeurt. **Keuze** dient voor het kiezen en bevestigen van een lokaal voorgelezen optie. **Escape** gaat één menuniveau omhoog. Op het hoofdniveau blijft Escape daar en meldt de ESP32 dat hoorbaar. Zo komt de gebruiker zonder tellen altijd terug op een herkenbaar punt, ook zonder backend.
+- Een nog niet bevestigde keuze vervalt bij Escape. Keuze en Escape openen de microfoon niet. De lokale interface houdt de actieve modus en de positie in het menu apart bij: een voorgelezen optie is nog niet de actieve dienst.
+- Nog te kiezen: het gebaar voor status, bladeren en bevestigen. Eén korte druk voor status en een reeks korte drukken voor een optienummer zijn besproken mogelijkheden, geen vastgestelde gebaren. Zie [bedieningsvoorstel](architecture.md#gesproken-bediening).
