@@ -136,9 +136,8 @@ knoppen hebben vrije GPIO's nodig; zie het
 
 **Open, nog af te stemmen:**
 
-- Hoe passen Ja, Nee en Escape op de knoppen van B-011? Vier knoppen (Spreek,
-  Ja/Keuze, Nee, Escape), of Keuze die de focus verplaatst met een lange druk
-  als bevestiging?
+- Knopindeling vastgesteld in [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape):
+  Spreek, Ja/Keuze, Nee en Escape. Open: betekenis van Nee buiten een bevestigvraag.
 - Welk display: de SH1106-OLED (128×64) die Sonocotta gebruikt, of iets anders?
   Hoe discreet is discreet: kijkhoek, helderheid, automatisch uit?
 - Kiezen uit vier opties: één knop per optie, of bladeren en bevestigen?

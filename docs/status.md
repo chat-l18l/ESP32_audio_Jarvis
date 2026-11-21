@@ -11,6 +11,7 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 ## Laatste sessie
 
 - [B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging): klein discreet display voor geheimen, keuze uit enkele opties en Ja/Nee/Escape-bevestiging van belangrijke acties. De eis staat vast; voorgestelde regels staan in [Display en bevestiging](architecture.md#display-en-bevestiging). H9 heeft een 30-pins OLED-FPC op SPI ([hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen)).
+- [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape): vier knoppen, Spreek, Ja/Keuze, Nee en Escape.
 - [B-014](decisions.md#b-014-assistent-als-expliciete-harness) (voorstel): assistent opgebouwd als expliciete harness naar Harness²; zie [plan-agent-harness.md](plan-agent-harness.md).
 
 Eerder (2026-11-18):
@@ -39,12 +40,13 @@ Eerder:
 
 ### Display en bevestiging (B-013)
 
-- [ ] Knopindeling: hoe passen Ja, Nee en Escape naast Spreek en Keuze (B-011)? Vier knoppen of Keuze met focus en een lange druk?
+- [x] Knopindeling: vier knoppen, Spreek, Ja/Keuze, Nee en Escape ([B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape)).
+- [ ] Betekenis van Nee in het gesproken menu zonder openstaande vraag.
 - [ ] Kiezen uit vier opties: één knop per optie of bladeren en bevestigen?
 - [ ] Displaytype: de SH1106 (128×64) van Sonocotta of iets anders; wat betekent "discreet" (kijkhoek, helderheid, automatisch uit)?
 - [ ] Welke acties vereisen een displaybevestiging? Een vaste lijst in de backend (voorstel).
 - [ ] Mag het scherm passief status tonen, of alleen op verzoek?
-- [ ] Welke GPIO's zijn fysiek bereikbaar voor extra knoppen (5/14/35 via de LAN-header?).
+- [ ] Vier knoppen vragen vier GPIO's: welke zijn fysiek bereikbaar (5/14/35 via de LAN-header, 39 zonder IR, of GPIO0)?
 
 ### Assistent-harness (B-014)
 
@@ -87,5 +89,4 @@ Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 
 ## Volgende stap
 
-Knopindeling voor display en bevestiging afstemmen (B-011/B-013). Daarna de
-acceptatiechecklist voor de eerste mijlpaal: alleen afspelen.
+Acceptatiechecklist voor de eerste mijlpaal: alleen afspelen.

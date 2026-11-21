@@ -123,3 +123,14 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 - Beschrijf de assistent op Linux als losse componenten met elk een eigenaar: prompt, guardrails, geheugen, tools, skills, scripts en middleware, naar [google-research/harness2](https://github.com/google-research/harness2).
 - Guardrails, zoals de bevestigingsplicht uit B-013 en de selectiegrens uit B-012, liggen in code en zijn niet aanpasbaar door het taalmodel of een automatische verbeterlus.
 - Afweging en onderzoeksvragen: [plan-agent-harness.md](plan-agent-harness.md).
+
+## B-015 Vier knoppen: Spreek, Ja/Keuze, Nee en Escape
+
+- Datum: 2026-11-21 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-21]`.
+- Breidt [B-011](#b-011-drie-knoppen-voor-bediening-zonder-scherm) uit met een aparte **Nee**-knop. Elke knop heeft één vaste betekenis, ook bij bevestigen op het display ([B-013](#b-013-display-voor-discrete-informatie-keuze-en-bevestiging)):
+  - **Spreek (PTT):** opent de microfoon; nooit een antwoord op een bevestigvraag.
+  - **Ja/Keuze:** kiest of bevestigt. Bij een bevestigvraag het enige pad naar uitvoering.
+  - **Nee:** wijst de getoonde vraag af. De dienst hoort expliciet "nee".
+  - **Escape:** verlaat de vraag of het menuniveau, zoals in B-011. De dienst hoort "geannuleerd".
+- Nee en Escape voeren allebei niets uit. Het verschil is wat de dienst terughoort: een antwoord, of het afbreken van de interactie.
+- Open: wat Nee betekent in het gesproken menu zonder openstaande vraag, en hoe een keuze uit vier opties met deze knoppen werkt.
