@@ -22,7 +22,8 @@ flowchart TB
     subgraph terminal["Spraakterminal · Louder-ESP32 en randapparatuur"]
         mic["I²S-microfoonmodule (nog te kiezen)"] -->|spraak| esp["ESP32-WROVER · PlatformIO / ESP-IDF"]
         ptt["PTT-knop"] -->|opname vrijgeven| esp
-        keys["Keuze en Escape"] -->|lokale menubediening| esp
+        keys["Keuze en Escape"] -->|menubediening, Ja/Nee/Escape| esp
+        esp -->|geheim, opties of bevestigvraag| disp["Klein display · type nog te kiezen"]
         esp -->|dienstnamen of uitvalmelding| menu["Lokale TTS"]
         menu -->|menuspraak via I²S| amp
         esp -->|I²S-audio| amp["TAS5805M-versterker"]
@@ -66,6 +67,9 @@ Provider- en model-ID's zijn Linux-configuratie. STT/LLM/TTS hebben verschillend
 rollen en capabilities; ontwerp hun concrete interfaces zodra de eerste werkende
 spraakpipeline die nodig heeft. Geen generiek pluginframework vooraf.
 
+Voor de opbouw van de assistent zelf (prompt, guardrails, geheugen, tools) is
+[Harness²](plan-agent-harness.md) de inspiratie ([B-014](decisions.md#b-014-assistent-als-expliciete-harness), voorstel).
+
 ## Labscenario
 
 Voorlopig ontwerp volgens [B-010](decisions.md#b-010-lokale-dienstkeuze-en-push-to-talk-in-het-lab). De gebruiker loopt met de microfoon door het lab. De ESP32 ontdekt de gebruikersdiensten; welke modellen achter een assistent draaien is een keuze van diens backend. Linux kan een lijst van beschikbare instanties leveren of de ESP32 kan hun aankondigingen zelf ontvangen. Beide passen bij deze taakverdeling; geen van beide is al gekozen.
@@ -83,6 +87,69 @@ De [drie knoprollen](decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scher
 Vergelijk dit met drie korte drukken voor optie drie. Direct nummeren kan sneller zijn, maar één druk kan dan pas als status worden herkend nadat de tijd voor een tweede druk is verstreken. In beide ontwerpen mag een wijziging in de dienstenlijst een al voorgelezen optie niet stilzwijgend vervangen door een andere dienst.
 
 **Praktijkproef (nog niet uitgevoerd):** laat iemand zonder scherm vanuit een onbekend submenu de actieve dienst opvragen en met Escape naar ‘Hoofdmenu’ teruggaan. Druk daar nogmaals op Escape: dezelfde hoofdtoestand moet hoorbaar blijven zonder dienstwissel of opname. Herhaal zonder backend en met een dienst die tussen voorlezen en bevestigen verdwijnt.
+
+### Display en bevestiging
+
+De eis staat vast in [B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging);
+de uitwerking hieronder is een **voorstel** om te toetsen. Het display vult de
+spraak aan, het vervangt haar niet: de [gesproken bediening](#gesproken-bediening)
+moet ook zonder kijken werken.
+
+| Functie | Voorbeeld | Waarom niet alleen via audio? |
+| --- | --- | --- |
+| Discreet tonen | Wachtwoord of toegangscode voor een labsysteem | Een luidspreker is openbaar; omstanders horen mee. |
+| Kiezen | Vier opties, bijvoorbeeld een dienst of een bestemming | Lezen gaat sneller dan vier opties aanhoren. |
+| Bevestigen | "2 voicemails verwijderen (A, B)? Ja / Nee / Escape" | Spraakherkenning kan "nee" als "ja" verstaan; een onomkeerbare actie vraagt een fysieke handeling. |
+
+**Bevestigen, voorgestelde regels:**
+
+1. Een bevestigvraag hoort bij precies één opdracht. Het verzoek bevat de
+   `command_id` en de selectie uit [B-012](decisions.md#b-012-alle-berichten-verwijst-naar-een-vaste-selectie);
+   het antwoord van het board noemt dezelfde `command_id`. Een knopdruk zonder
+   openstaande vraag doet niets.
+2. Alleen een expliciete **Ja** leidt tot uitvoering. Nee, Escape, een timeout,
+   een herstart of verbroken verbinding betekenen: niet uitvoeren.
+3. Ja is nooit voorgeselecteerd. Een knop die al ingedrukt was toen de vraag
+   verscheen, telt pas na loslaten. Mogelijk telt Ja pas na een korte minimale
+   leestijd.
+4. De tekst op het scherm komt van de dienst die de actie uitvoert, gemaakt uit
+   de vastgelegde selectie, met aantallen. Het taalmodel formuleert hem niet:
+   wat de gebruiker bevestigt, moet zijn wat wordt uitgevoerd.
+5. Welke acties een bevestiging vereisen, staat in een vaste lijst in de
+   backendcode (guardrail, zie [B-014](decisions.md#b-014-assistent-als-expliciete-harness)).
+   Spraak kan een bevestiging aanvragen, maar niet vervangen.
+6. Na uitvoering meldt Jarvis de werkelijke uitkomst, zoals beschreven in het
+   [contextplan](plan-context-en-initiatief.md#waar-ligt-de-tijdgrens-van-alle).
+
+**Geheimen tonen, voorgestelde regels:** niet uitspreken via TTS, niet loggen
+op de seriële console, niet in flash opslaan, scherm wissen na een timeout,
+Escape of het einde van de beurt. Alleen over een versleutelde verbinding.
+Bij boot en na een fout is het scherm leeg.
+
+**Eigenaarschap op de ESP32:** één lokale interfacemodule beheert display en
+knoppen, zoals één audio-eigenaar I²S en versterker beheert. De backend vraagt
+iets te tonen; de ESP32 bepaalt wat de knoppen op dat moment betekenen.
+
+**Hardware:** de H9-print heeft een 30-pins OLED-FPC-aansluiting op SPI. De
+knoppen hebben vrije GPIO's nodig; zie het
+[hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen).
+
+**Open, nog af te stemmen:**
+
+- Hoe passen Ja, Nee en Escape op de knoppen van B-011? Vier knoppen (Spreek,
+  Ja/Keuze, Nee, Escape), of Keuze die de focus verplaatst met een lange druk
+  als bevestiging?
+- Welk display: de SH1106-OLED (128×64) die Sonocotta gebruikt, of iets anders?
+  Hoe discreet is discreet: kijkhoek, helderheid, automatisch uit?
+- Kiezen uit vier opties: één knop per optie, of bladeren en bevestigen?
+- Mag het scherm passief status tonen (actieve dienst, verbinding), of alleen
+  op verzoek?
+
+**Te toetsen:** stuur een bevestigvraag, verbreek de verbinding en druk Ja; de
+actie mag niet plaatsvinden. Houd Ja ingedrukt terwijl de vraag verschijnt; die
+druk mag niet tellen. Stuur twee vragen kort na elkaar; een druk mag alleen de
+zichtbare vraag beantwoorden. Controleer na Escape en na een timeout dat een
+getoond wachtwoord van het scherm en uit het RAM-buffer is gewist.
 
 ## Audiohypothese: eerst bewijzen
 
@@ -129,7 +196,8 @@ is pas geverifieerd na een geregistreerde proef, niet na alleen een build.
 ## Wat volgt
 
 Eén microfoon valideren; daarna audio naar Linux en push-to-talk; vervolgens lokale
-Whisper/TTS, een GPU-model en cloudadapters. Kies het netwerkprotocol vóór de eerste
+Whisper/TTS, een GPU-model en cloudadapters. Display en knoppen krijgen een eigen
+hardwareproef (`tests/bringup/display/`), los van audio. Kies het netwerkprotocol vóór de eerste
 stream, met expliciete framing, formaat, grenzen, deadlines en sessie/beurt-ID's.
 Na annulering mogen oude chunks niet opnieuw hoorbaar worden.
 

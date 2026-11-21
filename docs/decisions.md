@@ -96,6 +96,7 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 ## B-011 Drie knoppen voor bediening zonder scherm
 
 - Datum: 2026-11-18 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-18]`.
+- Aangevuld door [B-013](#b-013-display-voor-discrete-informatie-keuze-en-bevestiging): er komt een klein display. De knoprollen blijven gelden; de spraakbediening blijft werken zonder naar het scherm te kijken.
 - **Spreek (PTT)** opent de microfoon voor de spreekbeurt. **Keuze** dient voor het kiezen en bevestigen van een lokaal voorgelezen optie. **Escape** gaat één menuniveau omhoog. Op het hoofdniveau blijft Escape daar en meldt de ESP32 dat hoorbaar. Zo komt de gebruiker zonder tellen altijd terug op een herkenbaar punt, ook zonder backend.
 - Een nog niet bevestigde keuze vervalt bij Escape. Keuze en Escape openen de microfoon niet. De lokale interface houdt de actieve modus en de positie in het menu apart bij: een voorgelezen optie is nog niet de actieve dienst.
 - Nog te kiezen: het gebaar voor status, bladeren en bevestigen. Eén korte druk voor status en een reeks korte drukken voor een optienummer zijn besproken mogelijkheden, geen vastgestelde gebaren. Zie [bedieningsvoorstel](architecture.md#gesproken-bediening).
@@ -105,3 +106,20 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 - Datum: 2026-11-18 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-18]`.
 - Leg de relatie tussen spreekbeurt, zichtbare berichten en opdracht vast. Alleen de toen bedoelde bericht-ID's mogen worden gewijzigd, ook bij vertraging of herhaling. Een later ontvangen bericht vraagt een nieuwe keuze. De berichtendienst bewaakt deze grens, niet het taalmodel.
 - Tijdregistratie, voorbeeld en te toetsen uitvoeringsvoorstel: [onderzoeksplan](plan-context-en-initiatief.md#waar-ligt-de-tijdgrens-van-alle).
+
+## B-013 Display voor discrete informatie, keuze en bevestiging
+
+- Datum: 2026-11-21 — Status: vastgesteld als eis `[confirmed: gebruiker, 2026-11-21]`; uitwerking open.
+- De terminal krijgt naast audio een klein, discreet display met drie functies:
+  1. **Discreet tonen:** informatie die niet hardop mag, zoals een wachtwoord.
+  2. **Kiezen:** uit enkele opties (bijvoorbeeld vier) met de knoppen van het device.
+  3. **Bevestigen:** voor belangrijke acties is spraak te onbetrouwbaar. Een vraag als "Alle voicemails verwijderen?" wordt op het display bevestigd met Ja, Nee of Escape.
+- Reden: een verkeerd verstane spraakopdracht mag geen onomkeerbare actie uitvoeren, en geheimen horen niet uit een luidspreker.
+- Open: displaytype, knopindeling, welke acties een bevestiging vereisen en het berichtcontract. Zie [Display en bevestiging](architecture.md#display-en-bevestiging).
+
+## B-014 Assistent als expliciete harness
+
+- Datum: 2026-11-21 — Status: voorstel.
+- Beschrijf de assistent op Linux als losse componenten met elk een eigenaar: prompt, guardrails, geheugen, tools, skills, scripts en middleware, naar [google-research/harness2](https://github.com/google-research/harness2).
+- Guardrails, zoals de bevestigingsplicht uit B-013 en de selectiegrens uit B-012, liggen in code en zijn niet aanpasbaar door het taalmodel of een automatische verbeterlus.
+- Afweging en onderzoeksvragen: [plan-agent-harness.md](plan-agent-harness.md).

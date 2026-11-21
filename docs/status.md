@@ -2,13 +2,18 @@
 
 Lees dit eerst aan het begin van een sessie; werk het bij aan het eind.
 
-Laatst bijgewerkt: 2026-11-18
+Laatst bijgewerkt: 2026-11-21
 
 ## Fase
 
 Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 
 ## Laatste sessie
+
+- [B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging): klein discreet display voor geheimen, keuze uit enkele opties en Ja/Nee/Escape-bevestiging van belangrijke acties. De eis staat vast; voorgestelde regels staan in [Display en bevestiging](architecture.md#display-en-bevestiging). H9 heeft een 30-pins OLED-FPC op SPI ([hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen)).
+- [B-014](decisions.md#b-014-assistent-als-expliciete-harness) (voorstel): assistent opgebouwd als expliciete harness naar Harness²; zie [plan-agent-harness.md](plan-agent-harness.md).
+
+Eerder (2026-11-18):
 
 - [B-011](decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scherm): drie knoppen. Lokaal terugkeren naar een hoorbaar hoofdniveau staat vast; het keuzegebaar is nog een voorstel.
 
@@ -31,6 +36,19 @@ Eerder:
 - [ ] [B-012](decisions.md#b-012-alle-berichten-verwijst-naar-een-vaste-selectie) toetsen: vaste berichtselectie bij vertraagde spraak, dubbele opdrachten en gedeeltelijke uitval. Voor een losse opdracht zonder eerder aangeboden lijst de gebruikersinteractie afstemmen.
 
 - [ ] [Context en initiatief in het lab](plan-context-en-initiatief.md): literatuur verzamelen en met twee labscenario's toetsen welke kennis en acties buiten de LLM-gesprekscontext moeten blijven bestaan.
+
+### Display en bevestiging (B-013)
+
+- [ ] Knopindeling: hoe passen Ja, Nee en Escape naast Spreek en Keuze (B-011)? Vier knoppen of Keuze met focus en een lange druk?
+- [ ] Kiezen uit vier opties: één knop per optie of bladeren en bevestigen?
+- [ ] Displaytype: de SH1106 (128×64) van Sonocotta of iets anders; wat betekent "discreet" (kijkhoek, helderheid, automatisch uit)?
+- [ ] Welke acties vereisen een displaybevestiging? Een vaste lijst in de backend (voorstel).
+- [ ] Mag het scherm passief status tonen, of alleen op verzoek?
+- [ ] Welke GPIO's zijn fysiek bereikbaar voor extra knoppen (5/14/35 via de LAN-header?).
+
+### Assistent-harness (B-014)
+
+- [ ] Harness²-paper lezen (arXiv 2610.14224); één labscenario uitwerken als kleine benchmark.
 
 ### Protocolkeuze
 
@@ -69,4 +87,5 @@ Hardware (zie [hardwaredossier](../hardware/louder_esp32/README.md)):
 
 ## Volgende stap
 
-Onderwerp voor onderwerp de spec, te beginnen met de hardware-identificatie.
+Knopindeling voor display en bevestiging afstemmen (B-011/B-013). Daarna de
+acceptatiechecklist voor de eerste mijlpaal: alleen afspelen.

@@ -68,6 +68,37 @@ Vóór implementatie vastleggen:
 - Voedingsspanning, stroomcapaciteit, connector/polariteit en luidsprekerimpedantie.
 - Exact toepasselijk schema en eventuele verschillen met de aanwezige print.
 
+### Display en knoppen
+
+Voor [B-013](../../docs/decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging)
+(display) en [B-011](../../docs/decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scherm) (knoppen).
+
+**Display:** H9 heeft een 30-pins OLED-FPC-connector (FPC3, FPC-05F-30PH20) op
+SPI `[confirmed: H9-schema blad 1 en 2, 2026-11-21]`:
+
+| Signaal | GPIO |
+| --- | --- |
+| SPI CLK / MOSI | 18 / 23 |
+| OLED CS (`SPI_CS1`) | 15 (strapping-pin, MTDO) |
+| OLED DC | 4 |
+| OLED RES | 32 |
+
+Sonocotta stuurt hier een SH1106-OLED van 128×64 mee aan
+`[confirmed: esphome/packages/oled.yaml, 2026-11-21]`. Welk paneel
+(formaat, kleur, leverancier) op deze connector past `[verify]`.
+
+**Knoppen:** op de print zitten alleen SW3 (reset, `EN`) en SW4 (BOOT, GPIO0)
+`[confirmed: H9-schema blad 2]`. GPIO0 kan na het opstarten als gebruikersknop
+dienen, maar mag bij reset niet ingedrukt zijn. Kandidaten voor extra knoppen,
+fysieke bereikbaarheid nog `[verify]`:
+
+| GPIO | Nu verbonden met | Opmerking |
+| --- | --- | --- |
+| 5, 14, 35 | Header voor de W5500-LAN-module (CS0, RST, INT) | Vrij als er geen LAN-module op zit. GPIO35 is alleen input en heeft geen interne pull-up. |
+| 39 | IR-ontvanger | Alleen als IR niet gebruikt wordt; alleen input, geen interne pull-up. |
+| 2 | Alleen een testpunt | Strapping-pin; moet bij boot laag of zwevend zijn. |
+| 12 | RGB-LED-header | Strapping-pin (flashspanning); liever niet voor een knop. |
+
 ## Referentie-informatie: niet als montagebewijs gebruiken
 
 Sonocotta documenteert microfoonheaders vanaf klassieke revisie H6. Schema's

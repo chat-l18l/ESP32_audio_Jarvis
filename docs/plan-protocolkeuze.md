@@ -11,6 +11,7 @@ Sinds [B-010](decisions.md#b-010-lokale-dienstkeuze-en-push-to-talk-in-het-lab) 
 - **Annulering:** stop lokaal, leeg de playbackbuffer en verwerp late blokken van de oude beurt. Betrouwbare levering alleen is niet voldoende: op TCP kan een dringend bericht niet voorbij eerder verzonden bytes in dezelfde richting.
 - **Herstel:** koppel berichten aan sessie en beurt. Gebruik zo nodig een volgnummer om ontbrekende of dubbele applicatieblokken te herkennen. Een nieuwe verbinding mag oude antwoorden niet opnieuw hoorbaar maken.
 - **Dynamische beschikbaarheid:** onderscheid een bereikbare GPU-host, een levende STT-dienst en een geladen model dat werk kan aannemen. Meerdere waarnemers mogen een gebeurtenis zien; een opdracht krijgt één geselecteerde uitvoerder. Na een timeout is de uitkomst mogelijk onbekend.
+- **Display en bevestiging ([B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging)):** een bevestigvraag en het antwoord moeten aan één `command_id` gebonden zijn, en een antwoord na een herverbinding mag niet als nieuw Ja gelden. Geheimen voor het display alleen over een versleutelde verbinding; bij pub/sub geen topic waarop een monitor ze kan meelezen.
 - **Kosten op de WROVER:** vergelijk vrij intern RAM naast wifi en I²S-DMA, CPU-gebruik, wachtrijdiepte en tijd tot stilte, met de beoogde authenticatie en versleuteling `[verify: hardwareproef]`.
 
 ## Alternatieven
@@ -36,6 +37,8 @@ Schets voor de proef, geen API-contract. `lab1` is een satelliet; de beurt-ID en
 | `jarvis/v1/sat/lab1/audio/down` | Coördinator → ESP32 | Antwoordaudio |
 | `jarvis/v1/sat/lab1/event` | ESP32 → coördinator | Knop, einde opname, lokaal gestopt |
 | `jarvis/v1/sat/lab1/control` | Coördinator → ESP32 | Stop of einde beurt |
+| `jarvis/v1/sat/lab1/confirm` | Dienst → ESP32 | Bevestigvraag met `command_id`, tekst en opties |
+| `jarvis/v1/sat/lab1/confirm/answer` | ESP32 → dienst | Ja, Nee, Escape of timeout, met dezelfde `command_id` |
 | `jarvis/v1/service/stt/gpu1/status` | STT-instantie → coördinator | `loading`, `ready`, `busy` |
 
 Een statusmonitor kan alleen de laatste stroom volgen, zonder microfoonaudio te ontvangen. Een nieuwe STT-instantie die zich meldt is nog geen opdracht om een lopende opname te transcriberen.
