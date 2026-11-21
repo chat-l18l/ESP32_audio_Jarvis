@@ -129,7 +129,7 @@ Bij boot en na een fout is het scherm leeg.
 knoppen, zoals één audio-eigenaar I²S en versterker beheert. De backend vraagt
 iets te tonen; de ESP32 bepaalt wat de knoppen op dat moment betekenen.
 
-**Hardware (PoC, [B-016](decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017)):**
+**Hardware (PoC, [B-016](decisions.md#b-016-bedieningspaneel-via-i2c-voor-de-poc)):**
 SSD1362-OLED en MCP23017 op de bestaande I²C-bus, samen met de TAS5805M. Zie het
 [hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen).
 

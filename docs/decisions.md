@@ -135,7 +135,7 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 - Nee en Escape voeren allebei niets uit. Het verschil is wat de dienst terughoort: een antwoord, of het afbreken van de interactie.
 - Open: wat Nee betekent in het gesproken menu zonder openstaande vraag, en hoe een keuze uit vier opties met deze knoppen werkt.
 
-## B-016 Bedieningspaneel via I²C voor de PoC: SSD1362-OLED en MCP23017
+## B-016 Bedieningspaneel via I2C voor de PoC
 
 - Datum: 2026-11-21 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-21]`.
 - Dit is een **proof of concept**, geen product. Na de PoC volgt een hardware-redesign.

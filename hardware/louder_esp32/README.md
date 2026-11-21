@@ -72,7 +72,7 @@ Vóór implementatie vastleggen:
 
 Voor [B-013](../../docs/decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging),
 [B-015](../../docs/decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape) en
-[B-016](../../docs/decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017).
+[B-016](../../docs/decisions.md#b-016-bedieningspaneel-via-i2c-voor-de-poc).
 **PoC-opbouw, geen productontwerp.**
 
 Display en knoppen hangen aan de I²C-bus van het board, direct afgetakt van

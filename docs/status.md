@@ -11,7 +11,7 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 ## Laatste sessie
 
 - [B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging): klein discreet display voor geheimen, keuze uit enkele opties en Ja/Nee/Escape-bevestiging van belangrijke acties. De eis staat vast; voorgestelde regels staan in [Display en bevestiging](architecture.md#display-en-bevestiging). H9 heeft een 30-pins OLED-FPC op SPI ([hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen)).
-- [B-016](decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017): PoC-bedieningspaneel op de bestaande I²C-bus: SSD1362-OLED 3,12 inch en MCP23017 met vier knoppen, 20× per seconde gepolld. Busregels voorgesteld in [Display en bevestiging](architecture.md#display-en-bevestiging).
+- [B-016](decisions.md#b-016-bedieningspaneel-via-i2c-voor-de-poc): PoC-bedieningspaneel op de bestaande I²C-bus: SSD1362-OLED 3,12 inch en MCP23017 met vier knoppen, 20× per seconde gepolld. Busregels voorgesteld in [Display en bevestiging](architecture.md#display-en-bevestiging).
 - [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape): vier knoppen, Spreek, Ja/Keuze, Nee en Escape.
 - [B-014](decisions.md#b-014-assistent-als-expliciete-harness) (voorstel): assistent opgebouwd als expliciete harness naar Harness²; zie [plan-agent-harness.md](plan-agent-harness.md).
 
