@@ -11,6 +11,7 @@ Afstemmen van werkwijze en spec. Er wordt nog niet gebouwd.
 ## Laatste sessie
 
 - [B-013](decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging): klein discreet display voor geheimen, keuze uit enkele opties en Ja/Nee/Escape-bevestiging van belangrijke acties. De eis staat vast; voorgestelde regels staan in [Display en bevestiging](architecture.md#display-en-bevestiging). H9 heeft een 30-pins OLED-FPC op SPI ([hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen)).
+- [B-016](decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017): PoC-bedieningspaneel op de bestaande I²C-bus: SSD1362-OLED 3,12 inch en MCP23017 met vier knoppen, 20× per seconde gepolld. Busregels voorgesteld in [Display en bevestiging](architecture.md#display-en-bevestiging).
 - [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape): vier knoppen, Spreek, Ja/Keuze, Nee en Escape.
 - [B-014](decisions.md#b-014-assistent-als-expliciete-harness) (voorstel): assistent opgebouwd als expliciete harness naar Harness²; zie [plan-agent-harness.md](plan-agent-harness.md).
 
@@ -43,10 +44,14 @@ Eerder:
 - [x] Knopindeling: vier knoppen, Spreek, Ja/Keuze, Nee en Escape ([B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape)).
 - [ ] Betekenis van Nee in het gesproken menu zonder openstaande vraag.
 - [ ] Kiezen uit vier opties: één knop per optie of bladeren en bevestigen?
-- [ ] Displaytype: de SH1106 (128×64) van Sonocotta of iets anders; wat betekent "discreet" (kijkhoek, helderheid, automatisch uit)?
+- [x] Displaytype: SSD1362-OLED 3,12 inch op I²C (B-016).
+- [ ] Resolutie van het paneel: 128×64 (gebruiker) of 256×64 (sdc2026-code)?
+- [ ] Busregels voor de gedeelde I²C-bus bevestigen: versterker eerst, poll elke 50 ms, display in chunks, bevestigvraag binnen 0,5 s op het scherm.
+- [ ] I²C-adressen en pull-ups controleren met een scan op de opgebouwde PoC.
+- [ ] Wat betekent "discreet": helderheid, automatisch uit?
 - [ ] Welke acties vereisen een displaybevestiging? Een vaste lijst in de backend (voorstel).
 - [ ] Mag het scherm passief status tonen, of alleen op verzoek?
-- [ ] Vier knoppen vragen vier GPIO's: welke zijn fysiek bereikbaar (5/14/35 via de LAN-header, 39 zonder IR, of GPIO0)?
+- [x] Knoppen via MCP23017 op I²C; geen extra ESP32-GPIO's nodig (B-016).
 
 ### Assistent-harness (B-014)
 

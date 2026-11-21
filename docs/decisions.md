@@ -134,3 +134,14 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
   - **Escape:** verlaat de vraag of het menuniveau, zoals in B-011. De dienst hoort "geannuleerd".
 - Nee en Escape voeren allebei niets uit. Het verschil is wat de dienst terughoort: een antwoord, of het afbreken van de interactie.
 - Open: wat Nee betekent in het gesproken menu zonder openstaande vraag, en hoe een keuze uit vier opties met deze knoppen werkt.
+
+## B-016 Bedieningspaneel via I²C voor de PoC: SSD1362-OLED en MCP23017
+
+- Datum: 2026-11-21 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-21]`.
+- Dit is een **proof of concept**, geen product. Na de PoC volgt een hardware-redesign.
+- Display en knoppen hangen aan de bestaande I²C-bus van het board (GPIO21 SDA, GPIO27 SCL), direct afgetakt van de WROVER-module. Op die bus zit ook de TAS5805M.
+  - **Display:** SSD1362-OLED van 3,12 inch, hetzelfde type als in omnibot/sdc2026. Resolutie: de gebruiker noemt 128×64, maar sdc2026 stuurt het paneel aan als 256×64 met 4-bit grijswaarden `[verify]`.
+  - **Knoppen:** de vier knoppen van [B-015](#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape) op een MCP23017. De ESP32 pollt ze; 20 keer per seconde (elke 50 ms) is genoeg.
+- Gevolg: geen extra ESP32-GPIO's nodig voor knoppen; de 30-pins OLED-FPC op SPI wordt in de PoC niet gebruikt.
+- Reden: eenvoudig aan te sluiten, bekend uit sdc2026 en geen ingreep in de print.
+- Open: de busverdeling tussen versterker, knoppen en display; zie [Display en bevestiging](architecture.md#display-en-bevestiging).

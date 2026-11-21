@@ -70,34 +70,46 @@ Vóór implementatie vastleggen:
 
 ### Display en knoppen
 
-Voor [B-013](../../docs/decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging)
-(display) en [B-011](../../docs/decisions.md#b-011-drie-knoppen-voor-bediening-zonder-scherm) (knoppen).
+Voor [B-013](../../docs/decisions.md#b-013-display-voor-discrete-informatie-keuze-en-bevestiging),
+[B-015](../../docs/decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape) en
+[B-016](../../docs/decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017).
+**PoC-opbouw, geen productontwerp.**
 
-**Display:** H9 heeft een 30-pins OLED-FPC-connector (FPC3, FPC-05F-30PH20) op
-SPI `[confirmed: H9-schema blad 1 en 2, 2026-11-21]`:
+Display en knoppen hangen aan de I²C-bus van het board, direct afgetakt van
+de WROVER-module `[confirmed: gebruiker, 2026-11-21]`:
 
-| Signaal | GPIO |
-| --- | --- |
-| SPI CLK / MOSI | 18 / 23 |
-| OLED CS (`SPI_CS1`) | 15 (strapping-pin, MTDO) |
-| OLED DC | 4 |
-| OLED RES | 32 |
+| Apparaat | I²C-adres | Bron | Status |
+| --- | --- | --- | --- |
+| TAS5805M (versterker, op de print) | 0x2C–0x2F, afhankelijk van ADR | TI-datasheet | adres `[verify]` met I²C-scan |
+| MCP23017 (knoppen) | 0x20–0x27 via A0–A2; sdc2026 gebruikt 0x27 | omnibot `314b650`, `config.h` | `[verify]` |
+| SSD1362-OLED 3,12 inch | 0x3C in sdc2026 | omnibot `314b650`, `config.h` | `[verify]` |
 
-Sonocotta stuurt hier een SH1106-OLED van 128×64 mee aan
-`[confirmed: esphome/packages/oled.yaml, 2026-11-21]`. Welk paneel
-(formaat, kleur, leverancier) op deze connector past `[verify]`.
-
-**Knoppen:** op de print zitten alleen SW3 (reset, `EN`) en SW4 (BOOT, GPIO0)
-`[confirmed: H9-schema blad 2]`. GPIO0 kan na het opstarten als gebruikersknop
-dienen, maar mag bij reset niet ingedrukt zijn. Kandidaten voor extra knoppen,
-fysieke bereikbaarheid nog `[verify]`:
-
-| GPIO | Nu verbonden met | Opmerking |
+| Signaal | GPIO | Bron |
 | --- | --- | --- |
-| 5, 14, 35 | Header voor de W5500-LAN-module (CS0, RST, INT) | Vrij als er geen LAN-module op zit. GPIO35 is alleen input en heeft geen interne pull-up. |
-| 39 | IR-ontvanger | Alleen als IR niet gebruikt wordt; alleen input, geen interne pull-up. |
-| 2 | Alleen een testpunt | Strapping-pin; moet bij boot laag of zwevend zijn. |
-| 12 | RGB-LED-header | Strapping-pin (flashspanning); liever niet voor een knop. |
+| I²C SDA | 21 | H6+-tabel hieronder, H9-schema |
+| I²C SCL | 27 | idem |
+
+**Knoppen op de MCP23017**, naar het patroon van sdc2026: ingangen op GPIOA met
+interne pull-ups, actief laag, knop naar GND. Voorstel: A0 Spreek, A1 Ja/Keuze,
+A2 Nee, A3 Escape `[assumption]`. De INT-uitgang wordt niet gebruikt; de ESP32
+pollt elke 50 ms. GPIOB blijft vrij, bijvoorbeeld voor een LED die aangeeft dat
+de microfoon open is.
+
+**Display:** sdc2026 stuurt de SSD1362 aan als 256×64 pixels met 4-bit
+grijswaarden (`app_display_ssd13xx.c`, omnibot `314b650`). De gebruiker noemt
+128×64. Typeplaatje of aankoopgegevens van het paneel beslissen `[verify]`.
+
+Te controleren vóór de eerste displayproef:
+
+- Pull-ups op SDA/SCL: zitten die op de Louder-print, of op de OLED- of
+  MCP-module? Te veel parallelle pull-ups maken de bus te zwaar `[verify]`.
+- Bekabeling kort houden; 400 kHz zoals in sdc2026, met 100 kHz als terugvaloptie `[assumption]`.
+- Stroomverbruik van de OLED-module uit 3V3 (XL1509-buck) `[verify]`.
+
+**Niet gebruikt in de PoC:** de 30-pins OLED-FPC (SPI: CS 15, DC 4, RES 32,
+CLK 18, MOSI 23) en de knoppen SW3 (reset) en SW4 (BOOT, GPIO0)
+`[confirmed: H9-schema, 2026-11-21]`. Sonocotta gebruikt op die FPC een
+SH1106 van 128×64.
 
 ## Referentie-informatie: niet als montagebewijs gebruiken
 

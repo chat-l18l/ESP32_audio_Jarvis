@@ -21,9 +21,8 @@ de labels op de pijlen vertellen wat het ontvangt of teruggeeft.
 flowchart TB
     subgraph terminal["Spraakterminal · Louder-ESP32 en randapparatuur"]
         mic["I²S-microfoonmodule (nog te kiezen)"] -->|spraak| esp["ESP32-WROVER · PlatformIO / ESP-IDF"]
-        ptt["PTT-knop"] -->|opname vrijgeven| esp
-        keys["Keuze en Escape"] -->|menubediening, Ja/Nee/Escape| esp
-        esp -->|geheim, opties of bevestigvraag| disp["Klein display · type nog te kiezen"]
+        keys["4 knoppen: Spreek, Ja/Keuze, Nee, Escape · MCP23017"] -->|I²C, 20× per seconde gepolld| esp
+        esp -->|I²C: geheim, opties of bevestigvraag| disp["SSD1362-OLED 3,12 inch"]
         esp -->|dienstnamen of uitvalmelding| menu["Lokale TTS"]
         menu -->|menuspraak via I²S| amp
         esp -->|I²S-audio| amp["TAS5805M-versterker"]
@@ -130,16 +129,36 @@ Bij boot en na een fout is het scherm leeg.
 knoppen, zoals één audio-eigenaar I²S en versterker beheert. De backend vraagt
 iets te tonen; de ESP32 bepaalt wat de knoppen op dat moment betekenen.
 
-**Hardware:** de H9-print heeft een 30-pins OLED-FPC-aansluiting op SPI. De
-knoppen hebben vrije GPIO's nodig; zie het
+**Hardware (PoC, [B-016](decisions.md#b-016-bedieningspaneel-via-ic-voor-de-poc-ssd1362-oled-en-mcp23017)):**
+SSD1362-OLED en MCP23017 op de bestaande I²C-bus, samen met de TAS5805M. Zie het
 [hardwaredossier](../hardware/louder_esp32/README.md#display-en-knoppen).
+
+**Eén gedeelde I²C-bus, voorgestelde regels:**
+
+1. Eén module is eigenaar van de bus en voert alle transacties uit:
+   versterker, knoppen en display. Geen andere taak raakt de bus aan.
+2. **Versterker eerst:** een mute- of volumecommando gaat vóór elke
+   displayoverdracht. Geen displaychunk mag dat merkbaar vertragen.
+3. **Knoppen op tijd:** de MCP23017 wordt elke 50 ms gelezen. Een gemiste of
+   verlate poll wordt geteld en gelogd.
+4. **Display in stukken:** een volledig beeld van 256×64 pixels met 4 bits per
+   pixel is 8.192 bytes; bij 400 kHz kost dat ongeveer 0,2 s busstijd
+   `[assumption]`. Stuur alleen gewijzigde gebieden, in chunks van ongeveer
+   64 bytes (ruwweg 1,5 ms per chunk) tussen de polls door. sdc2026 gebruikt
+   65 bytes per tick van 100 ms; dat is te traag voor een bevestigvraag.
+5. Een bevestigvraag of geheim staat binnen een vast te stellen tijd volledig
+   op het scherm, voorstel 0,5 s. Ja telt pas als de vraag volledig getoond is.
+6. Een busfout of ontbrekend apparaat leidt niet tot een rebootlus. Valt de
+   MCP23017 uit, dan is er geen bevestiging mogelijk en wordt een actie die
+   bevestiging vereist niet uitgevoerd. Valt het display uit, dan geldt
+   hetzelfde. De versterker gaat naar mute als zijn toestand onzeker is.
 
 **Open, nog af te stemmen:**
 
 - Knopindeling vastgesteld in [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape):
   Spreek, Ja/Keuze, Nee en Escape. Open: betekenis van Nee buiten een bevestigvraag.
-- Welk display: de SH1106-OLED (128×64) die Sonocotta gebruikt, of iets anders?
-  Hoe discreet is discreet: kijkhoek, helderheid, automatisch uit?
+- Display gekozen in B-016. Resolutie 128×64 of 256×64 `[verify]`. Hoe discreet
+  is discreet: helderheid, automatisch uit?
 - Kiezen uit vier opties: één knop per optie, of bladeren en bevestigen?
 - Mag het scherm passief status tonen (actieve dienst, verbinding), of alleen
   op verzoek?
