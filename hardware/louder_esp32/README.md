@@ -95,9 +95,9 @@ A2 Nee, A3 Escape `[assumption]`. De INT-uitgang wordt niet gebruikt; de ESP32
 pollt elke 50 ms. GPIOB blijft vrij, bijvoorbeeld voor een LED die aangeeft dat
 de microfoon open is.
 
-**Display:** sdc2026 stuurt de SSD1362 aan als 256×64 pixels met 4-bit
-grijswaarden (`app_display_ssd13xx.c`, omnibot `314b650`). De gebruiker noemt
-128×64. Typeplaatje of aankoopgegevens van het paneel beslissen `[verify]`.
+**Display:** SSD1362, 3,12 inch, 256×64 pixels met 4-bit grijswaarden
+`[confirmed: gebruiker, 2026-11-21]`; sdc2026 stuurt het paneel ook zo aan
+(`app_display_ssd13xx.c`, omnibot `314b650`).
 
 Te controleren vóór de eerste displayproef:
 

@@ -45,7 +45,7 @@ Eerder:
 - [ ] Betekenis van Nee in het gesproken menu zonder openstaande vraag.
 - [ ] Kiezen uit vier opties: één knop per optie of bladeren en bevestigen?
 - [x] Displaytype: SSD1362-OLED 3,12 inch op I²C (B-016).
-- [ ] Resolutie van het paneel: 128×64 (gebruiker) of 256×64 (sdc2026-code)?
+- [x] Resolutie van het paneel: 256×64, 4-bit grijswaarden (B-016).
 - [ ] Busregels voor de gedeelde I²C-bus bevestigen: versterker eerst, poll elke 50 ms, display in chunks, bevestigvraag binnen 0,5 s op het scherm.
 - [ ] I²C-adressen en pull-ups controleren met een scan op de opgebouwde PoC.
 - [ ] Wat betekent "discreet": helderheid, automatisch uit?

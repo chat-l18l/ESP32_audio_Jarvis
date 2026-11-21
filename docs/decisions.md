@@ -140,7 +140,7 @@ Status: `vastgesteld` (afgestemd met gebruiker) of `voorstel` (nog niet bevestig
 - Datum: 2026-11-21 — Status: vastgesteld `[confirmed: gebruiker, 2026-11-21]`.
 - Dit is een **proof of concept**, geen product. Na de PoC volgt een hardware-redesign.
 - Display en knoppen hangen aan de bestaande I²C-bus van het board (GPIO21 SDA, GPIO27 SCL), direct afgetakt van de WROVER-module. Op die bus zit ook de TAS5805M.
-  - **Display:** SSD1362-OLED van 3,12 inch, hetzelfde type als in omnibot/sdc2026. Resolutie: de gebruiker noemt 128×64, maar sdc2026 stuurt het paneel aan als 256×64 met 4-bit grijswaarden `[verify]`.
+  - **Display:** SSD1362-OLED van 3,12 inch, hetzelfde type als in omnibot/sdc2026. Resolutie 256×64 pixels, 4-bit grijswaarden `[confirmed: gebruiker, 2026-11-21]`, zoals sdc2026 het aanstuurt.
   - **Knoppen:** de vier knoppen van [B-015](#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape) op een MCP23017. De ESP32 pollt ze; 20 keer per seconde (elke 50 ms) is genoeg.
 - Gevolg: geen extra ESP32-GPIO's nodig voor knoppen; de 30-pins OLED-FPC op SPI wordt in de PoC niet gebruikt.
 - Reden: eenvoudig aan te sluiten, bekend uit sdc2026 en geen ingreep in de print.

@@ -142,7 +142,7 @@ SSD1362-OLED en MCP23017 op de bestaande I²C-bus, samen met de TAS5805M. Zie he
 3. **Knoppen op tijd:** de MCP23017 wordt elke 50 ms gelezen. Een gemiste of
    verlate poll wordt geteld en gelogd.
 4. **Display in stukken:** een volledig beeld van 256×64 pixels met 4 bits per
-   pixel is 8.192 bytes; bij 400 kHz kost dat ongeveer 0,2 s busstijd
+   pixel is 8.192 bytes `[confirmed: resolutie, gebruiker 2026-11-21]`; bij 400 kHz kost dat ongeveer 0,2 s busstijd
    `[assumption]`. Stuur alleen gewijzigde gebieden, in chunks van ongeveer
    64 bytes (ruwweg 1,5 ms per chunk) tussen de polls door. sdc2026 gebruikt
    65 bytes per tick van 100 ms; dat is te traag voor een bevestigvraag.
@@ -157,7 +157,7 @@ SSD1362-OLED en MCP23017 op de bestaande I²C-bus, samen met de TAS5805M. Zie he
 
 - Knopindeling vastgesteld in [B-015](decisions.md#b-015-vier-knoppen-spreek-jakeuze-nee-en-escape):
   Spreek, Ja/Keuze, Nee en Escape. Open: betekenis van Nee buiten een bevestigvraag.
-- Display gekozen in B-016. Resolutie 128×64 of 256×64 `[verify]`. Hoe discreet
+- Display gekozen in B-016: 256×64, 4-bit grijswaarden. Hoe discreet
   is discreet: helderheid, automatisch uit?
 - Kiezen uit vier opties: één knop per optie, of bladeren en bevestigen?
 - Mag het scherm passief status tonen (actieve dienst, verbinding), of alleen
